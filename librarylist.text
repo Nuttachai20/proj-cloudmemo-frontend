@@ -1,0 +1,17 @@
+UI kitten
+https://akveo.github.io/react-native-ui-kitten/docs/guides/getting-started#getting-started
+
+lottie 
+https://airbnb.io/lottie/#/react-native
+
+react-native-vector-icons
+https://github.com/oblador/react-native-vector-icons#installation
+
+react-native-geolocation-service
+https://github.com/Agontuk/react-native-geolocation-service
+
+api get weather --> 60 req per min
+https://api.openweathermap.org/data/2.5/weather?lat=13.722931837203577&lon=100.73457812172875&appid=9ca38f662ad44e37bc3d88934c32bb4d
+
+react-native-calendars
+https://www.npmjs.com/package/react-native-calendars
