@@ -13,6 +13,19 @@ import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
 
 import { AppRegistry, Platform } from 'react-native';
 
+AppRegistry.registerComponent('proj-cloudmemo-frontend', () => App);
+AppRegistry.registerComponent(
+  'proj-cloudmemo-frontend'.toLowerCase(),
+  () => App,
+);
+
+if (Platform.OS === 'web') {
+  const rootTag =
+    document.getElementById('root') ||
+    document.getElementById('proj-cloudmemo-frontend');
+  AppRegistry.runApplication('proj-cloudmemo-frontend', { rootTag });
+}
+
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
@@ -23,15 +36,12 @@ export default function App() {
     return (
       <ApplicationProvider {...eva} theme={eva.light}>
         <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
+          <Navigation colorScheme={colorScheme} />
+          <StatusBar />
         </SafeAreaProvider>
       </ApplicationProvider>
-     
     );
   }
 }
 
 registerRootComponent(App);
-
-
