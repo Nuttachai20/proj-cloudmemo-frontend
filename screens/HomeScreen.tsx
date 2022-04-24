@@ -14,6 +14,7 @@ import { RootTabScreenProps } from '../types';
 import { useEffect, useRef, useState } from 'react';
 import WeatherWidget from '../components/Weather';
 import CalendarComp from '../components/Calendar';
+import Geolocation from 'react-native-geolocation-service';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   let weather: weatherType;
@@ -23,15 +24,28 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     data: '',
     status: '',
   });
+  const [location, setLocation] = useState<ILocation | undefined>(undefined);
 
   useEffect(() => {
     const GetCurrentWeather = async (): Promise<any> => {
-      let data = await GetWeatherData();
-      // console.log("data:",data);
-      setWeather({
-        data: data?.data,
-        status: data?.data.status,
-      });
+      Geolocation.getCurrentPosition(
+        async position => {
+          const { latitude, longitude } = position.coords;
+          setLocation({
+            latitude,
+            longitude,
+          });
+          let data = await GetWeatherData(latitude, longitude);
+          setWeather({
+            data: data?.data,
+            status: data?.data.status,
+          });
+        },
+        error => {
+          console.log(error.code, error.message);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+      );
     };
     GetCurrentWeather();
   }, []);
@@ -45,14 +59,23 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
         </Text>
         <CalendarComp></CalendarComp>
       </View>
+      {location ? (
+        <View>
+          <Text>Latitude: {location.latitude}</Text>
+          <Text>Latitude: {location.longitude}</Text>
+        </View>
+      ) : (
+        <View>Loading...</View>
+      )}
     </View>
   );
 }
 
-const GetWeatherData = () => {
+const GetWeatherData = (latitude: number, longitude: number) => {
+  //https://api.openweathermap.org/data/2.5/weather?lat=13.722931837203577&lon=100.73457812172875&appid=9ca38f662ad44e37bc3d88934c32bb4d
   let nowWeather = axios
     .get(
-      'https://api.openweathermap.org/data/2.5/weather?lat=13.722931837203577&lon=100.73457812172875&appid=9ca38f662ad44e37bc3d88934c32bb4d',
+      `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=9ca38f662ad44e37bc3d88934c32bb4d`,
     )
     .then(res => {
       return res;
@@ -96,4 +119,9 @@ interface locationType {
   floor: number;
   timestamp: number;
   fromMockProvider: boolean;
+}
+
+interface ILocation {
+  latitude: number;
+  longitude: number;
 }

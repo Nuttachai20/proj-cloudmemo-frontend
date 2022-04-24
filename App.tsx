@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { registerRootComponent } from 'expo';
 
+import Geolocation from 'react-native-geolocation-service';
 // import { Text } from 'react-native';
 
 import useCachedResources from './hooks/useCachedResources';
@@ -30,6 +31,8 @@ if (Platform.OS === 'ios') {
   console.log('ios platform');
 
   AppRegistry.registerComponent('proj-cloudmemo-frontend', () => App);
+
+  Geolocation.requestAuthorization('always');
 }
 
 export default function App() {
