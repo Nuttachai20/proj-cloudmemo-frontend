@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 
 import axios from 'axios';
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { useEffect, useRef, useState } from 'react';
@@ -54,19 +53,19 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     <View style={{ flex: 1 }} themeColor="cloud">
       <WeatherWidget weather={weather.data} name={''} />
       <View themeColor="cloud">
-        <Text themeColor="cloud" style={styles.title}>
+        {/* <Text themeColor="cloud" style={styles.title}>
           Home
-        </Text>
+        </Text> */}
         <CalendarComp></CalendarComp>
       </View>
-      {location ? (
+      {/* {location ? (
         <View>
           <Text>Latitude: {location.latitude}</Text>
           <Text>Latitude: {location.longitude}</Text>
         </View>
       ) : (
         <View>Loading...</View>
-      )}
+      )} */}
     </View>
   );
 }

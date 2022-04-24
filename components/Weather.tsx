@@ -7,10 +7,10 @@ import moment from 'moment';
 
 const WeatherIcon = () => {
   return (
-    <View style={{ flex: 1 }} themeColor="cloud">
+    <View themeColor="cloud">
       <Image
         style={styles.stretch}
-        source={require('../assets/images/icon/Smoke.png')}
+        source={require('../assets/images/icon/ic_sky.svg')}
       />
     </View>
   );
@@ -46,31 +46,31 @@ export default function weatherWidget(prop: weatherType) {
       <Text themeColor="cloud" style={styles.header}>
         {name}
       </Text>
-      <View themeColor="cloud" style={styles.spilt}>
-        <View themeColor="cloud" style={{ width: '50%' }}>
-          <Text themeColor="cloud">{KelvintoCelsius(main?.feels_like)}</Text>
+      <View themeColor="cloud" style={styles.weatherDisplay}>
+        <View themeColor="cloud" style={{ width: '30%' }}>
           <WeatherIcon />
+          <Text themeColor="cloud">{KelvintoCelsius(main?.feels_like)}</Text>
           <Text themeColor="cloud">{listWeather()}</Text>
         </View>
         <View themeColor="cloud" style={styles.spilt}>
           <View themeColor="cloud" style={styles.header}>
             <Image
               style={styles.stretch}
-              source={require('../assets/images/icon/Smoke.png')}
+              source={require('../assets/images/icon/ic_celsius.svg')}
             />
             <Text themeColor="cloud">{KelvintoCelsius(main?.temp)}</Text>
           </View>
           <View themeColor="cloud" style={styles.header}>
             <Image
               style={styles.stretch}
-              source={require('../assets/images/icon/Smoke.png')}
+              source={require('../assets/images/icon/ic_thermometer_1.svg')}
             />
             <Text themeColor="cloud">{KelvintoCelsius(main?.temp_min)}</Text>
           </View>
           <View themeColor="cloud" style={styles.header}>
             <Image
               style={styles.stretch}
-              source={require('../assets/images/icon/Smoke.png')}
+              source={require('../assets/images/icon/ic_thermometer_6.svg')}
             />
             <Text themeColor="cloud">{KelvintoCelsius(main?.temp_max)}</Text>
           </View>
@@ -82,7 +82,6 @@ export default function weatherWidget(prop: weatherType) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 100,
     paddingTop: 15,
     paddingBottom: 15,
     paddingLeft: 10,
@@ -108,6 +107,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     resizeMode: 'contain',
+  },
+  weatherDisplay: {
+    display: 'flex',
+    flexDirection: 'row',
   },
 });
 
