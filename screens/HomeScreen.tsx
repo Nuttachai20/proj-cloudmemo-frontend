@@ -13,6 +13,7 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { useEffect, useRef, useState } from 'react';
 import WeatherWidget from '../components/Weather';
+import CalendarComp from '../components/Calendar';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   let weather: weatherType;
@@ -36,13 +37,13 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   }, []);
 
   return (
-    <View themeColor="cloud">
+    <View style={{ flex: 1 }} themeColor="cloud">
       <WeatherWidget weather={weather.data} name={''} />
       <View themeColor="cloud">
         <Text themeColor="cloud" style={styles.title}>
           Home
         </Text>
-        {/* <EditScreenInfo  path="/screens/HomeScreen.tsx" /> */}
+        <CalendarComp></CalendarComp>
       </View>
     </View>
   );

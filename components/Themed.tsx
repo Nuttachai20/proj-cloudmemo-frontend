@@ -15,7 +15,7 @@ export function useThemeColor(
     keyof typeof Colors.dark,
 ) {
   // const theme = useColorScheme();
-  console.log(Colors[theme][colorName]);
+  // console.log(Colors[theme][colorName]);
 
   return Colors[theme][colorName];
   // const colorFromProps = theme;
@@ -38,7 +38,7 @@ export type ViewProps = ThemeProps & DefaultView['props'];
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, themeColor, ...otherProps } = props;
-  console.log(' themeColor:', themeColor);
+  // console.log(' themeColor:', themeColor);
 
   const color = useThemeColor(
     themeColor === 'cloud' ? 'cloud' : 'dark',
@@ -50,7 +50,7 @@ export function Text(props: TextProps) {
 
 export function View(props: ViewProps) {
   const { style, lightColor, darkColor, themeColor, ...otherProps } = props;
-  console.log(themeColor);
+  // console.log(themeColor);
 
   const backgroundColor = useThemeColor(
     themeColor === 'cloud' ? 'cloud' : 'dark',

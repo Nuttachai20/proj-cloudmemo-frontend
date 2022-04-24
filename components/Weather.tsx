@@ -1,56 +1,113 @@
-import { Layout, Text, Input, Button } from '@ui-kitten/components';
+import { Layout, Input, Button } from '@ui-kitten/components';
 import { TouchableWithoutFeedback } from '@ui-kitten/components/devsupport';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
+import { Text, View } from '../components/Themed';
+
+import moment from 'moment';
+
+const WeatherIcon = () => {
+  return (
+    <View style={{ flex: 1 }} themeColor="cloud">
+      <Image
+        style={styles.stretch}
+        source={require('../assets/images/icon/Smoke.png')}
+      />
+    </View>
+  );
+};
 
 export default function weatherWidget(prop: weatherType) {
-  console.log(prop.weather);
   const { weather, base, main, name } = prop.weather;
-  console.log('???', prop.weather.weather);
-  let ex_array = [{ name: 'a' }, { name: 'b' }];
 
   const listWeather = () => {
-    if (prop.weather.weather) {
-      for (let item of prop.weather.weather) {
-        console.log(item);
-        <Text>{item.main}</Text>;
+    let text: string;
+    if (weather) {
+      let item: exArray;
+      for (item of weather) {
+        console.log('item:', item);
+        text = item.description;
+        return text;
       }
     }
   };
-  const ListWeather = () => {
-    return prop.weather?.weather?.map(item => {
-      return item.main;
-    });
+
+  const KelvintoCelsius = (temp: number) => {
+    return (temp - 273.15).toFixed(2);
   };
 
+  moment.locale('en');
+  var dt: Date = new Date();
+
   return (
-    <Layout style={styles.container}>
-      <Text>
-        {name} {base}
+    <View themeColor="cloud" style={styles.container}>
+      <Text themeColor="cloud" style={styles.header}>
+        Today, {moment(dt).format('dddd DD  MMMM')}
       </Text>
-      <View>
-        {prop.weather?.weather?.map(item => {
-          item.main;
-        })}
+      <Text themeColor="cloud" style={styles.header}>
+        {name}
+      </Text>
+      <View themeColor="cloud" style={styles.spilt}>
+        <View themeColor="cloud" style={{ width: '50%' }}>
+          <Text themeColor="cloud">{KelvintoCelsius(main?.feels_like)}</Text>
+          <WeatherIcon />
+          <Text themeColor="cloud">{listWeather()}</Text>
+        </View>
+        <View themeColor="cloud" style={styles.spilt}>
+          <View themeColor="cloud" style={styles.header}>
+            <Image
+              style={styles.stretch}
+              source={require('../assets/images/icon/Smoke.png')}
+            />
+            <Text themeColor="cloud">{KelvintoCelsius(main?.temp)}</Text>
+          </View>
+          <View themeColor="cloud" style={styles.header}>
+            <Image
+              style={styles.stretch}
+              source={require('../assets/images/icon/Smoke.png')}
+            />
+            <Text themeColor="cloud">{KelvintoCelsius(main?.temp_min)}</Text>
+          </View>
+          <View themeColor="cloud" style={styles.header}>
+            <Image
+              style={styles.stretch}
+              source={require('../assets/images/icon/Smoke.png')}
+            />
+            <Text themeColor="cloud">{KelvintoCelsius(main?.temp_max)}</Text>
+          </View>
+        </View>
       </View>
-      <Layout style={styles.spilt}></Layout>
-      <Text style={styles.spilt}>
-        {main?.temp} {main?.temp_min} {main?.temp_max}
-      </Text>
-    </Layout>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#61dafb',
-    paddingTop: 10,
-    paddingBottom: 10,
+    marginTop: 100,
+    paddingTop: 15,
+    paddingBottom: 15,
+    paddingLeft: 10,
+    paddingRight: 10,
+    width: '100%',
+    display: 'flex',
+  },
+  header: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 'bold',
   },
   spilt: {
-    width: 80,
+    width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    flex: 1,
+    justifyContent: 'space-around',
+  },
+  stretch: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
   },
 });
 
@@ -58,7 +115,12 @@ interface weatherType {
   name: string;
   weather: {
     base: string;
-    weather: weatherArray;
+    weather: Array<{
+      id: number;
+      main: string;
+      description: string;
+      icon: string;
+    }>;
     name: string;
     main: {
       temp: number;

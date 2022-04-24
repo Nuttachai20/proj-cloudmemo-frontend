@@ -17,9 +17,9 @@ export default {
     tabIconSelected: tintColorDark,
   },
   cloud:{
-    text: '#000',
+    text: '#A07A70',
     background: '#FEF2EA',
-    tint: tintColorDark,
+    tint: '#FEF2EA',
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
   }
