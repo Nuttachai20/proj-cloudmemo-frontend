@@ -9,38 +9,51 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
 export function useThemeColor(
-  props: { light?: string; dark?: string },
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark,
+  theme: keyof typeof Colors,
+  colorName: keyof typeof Colors.cloud &
+    keyof typeof Colors.light &
+    keyof typeof Colors.dark,
 ) {
-  const theme = useColorScheme();
-  const colorFromProps = props[theme];
+  // const theme = useColorScheme();
+  console.log(Colors[theme][colorName]);
 
-  if (colorFromProps) {
-    return colorFromProps;
-  } else {
-    return Colors[theme][colorName];
-  }
+  return Colors[theme][colorName];
+  // const colorFromProps = theme;
+
+  // if (colorFromProps) {
+  //   return colorFromProps;
+  // } else {
+  //   return Colors[theme][colorName];
+  // }
 }
 
 type ThemeProps = {
   lightColor?: string;
   darkColor?: string;
+  themeColor?: string;
 };
 
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
 
 export function Text(props: TextProps) {
-  const { style, lightColor, darkColor, ...otherProps } = props;
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+  const { style, lightColor, darkColor, themeColor, ...otherProps } = props;
+  console.log(' themeColor:', themeColor);
+
+  const color = useThemeColor(
+    themeColor === 'cloud' ? 'cloud' : 'dark',
+    'text',
+  );
 
   return <DefaultText style={[{ color }, style]} {...otherProps} />;
 }
 
 export function View(props: ViewProps) {
-  const { style, lightColor, darkColor, ...otherProps } = props;
+  const { style, lightColor, darkColor, themeColor, ...otherProps } = props;
+  console.log(themeColor);
+
   const backgroundColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
+    themeColor === 'cloud' ? 'cloud' : 'dark',
     'background',
   );
 

@@ -26,6 +26,12 @@ if (Platform.OS === 'web') {
   AppRegistry.runApplication('proj-cloudmemo-frontend', { rootTag });
 }
 
+if (Platform.OS === 'ios') {
+  console.log('ios platform');
+
+  AppRegistry.registerComponent('proj-cloudmemo-frontend', () => App);
+}
+
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
