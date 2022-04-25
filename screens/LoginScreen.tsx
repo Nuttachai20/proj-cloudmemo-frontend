@@ -4,6 +4,7 @@ import { Layout, Text, Input, Button } from '@ui-kitten/components';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BaseUrl from '../constants/BaseUrl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
@@ -19,8 +20,8 @@ export default function LoginScreen() {
     console.log('password', password);
     axios
       .post(`${BaseUrl.baseurl}user/sign/in`, {
-        username: username,
-        password: password,
+        Email: username,
+        Password: password,
       })
       .then(res => {
         console.log(res);
@@ -36,8 +37,8 @@ export default function LoginScreen() {
       <Layout style={styles.separator} />
       <Text style={styles.title}>Login</Text>
       <Input
-        label="User / Email Address"
-        placeholder="Username"
+        label="Email Address"
+        placeholder="Email"
         value={username}
         onChangeText={nextValue => setUsername(nextValue)}
       />

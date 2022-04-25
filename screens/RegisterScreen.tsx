@@ -51,6 +51,7 @@ export default function RegisterScreen() {
       })
       .then(res => {
         console.log(res);
+        window.location.href = '/login';
       })
       .catch(err => {
         alert(err);
