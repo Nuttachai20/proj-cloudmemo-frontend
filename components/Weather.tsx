@@ -10,7 +10,7 @@ const WeatherIcon = () => {
     <View themeColor="cloud">
       <Image
         style={styles.stretch}
-        source={require('../assets/images/icon/ic_sky.svg')}
+        source={require('../assets/images/icon/icweather1.png')}
       />
     </View>
   );
@@ -47,7 +47,7 @@ export default function weatherWidget(prop: weatherType) {
         {name}
       </Text>
       <View themeColor="cloud" style={styles.weatherDisplay}>
-        <View themeColor="cloud" style={{ width: '30%' }}>
+        <View themeColor="cloud" style={{ width: '40%' }}>
           <WeatherIcon />
           {/* <Text themeColor="cloud">{KelvintoCelsius(main?.temp)}</Text> */}
           <Text themeColor="cloud">{listWeather()}</Text>
@@ -61,17 +61,16 @@ export default function weatherWidget(prop: weatherType) {
           <View themeColor="cloud" style={styles.header}>
             <Image
               style={styles.stretch}
-              source={require('../assets/images/icon/ic_thermometer_1.svg')}
+              source={require('../assets/images/icon/icthermometer1.png')}
             />
             <Text themeColor="cloud">{KelvintoCelsius(main?.temp_min)}</Text>
           </View>
           <View themeColor="cloud" style={styles.header}>
             <Image
               style={styles.stretch}
-              source={require('../assets/images/icon/ic_thermometer_6.svg')}
+              source={require('../assets/images/icon/icthermometer6.png')}
             />
             <Text themeColor="cloud">{KelvintoCelsius(main?.temp_max)}</Text>
-            <Text themeColor="cloud"></Text>
           </View>
         </View>
       </View>
@@ -81,7 +80,7 @@ export default function weatherWidget(prop: weatherType) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 15,
+    paddingTop: 60,
     paddingBottom: 15,
     paddingLeft: 10,
     paddingRight: 10,
@@ -103,13 +102,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   stretch: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     resizeMode: 'contain',
   },
   weatherDisplay: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

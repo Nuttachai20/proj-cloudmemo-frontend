@@ -53,7 +53,12 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="Root"
+    >
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}

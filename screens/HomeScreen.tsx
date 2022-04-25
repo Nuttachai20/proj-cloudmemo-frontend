@@ -1,19 +1,17 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  Image,
-  PermissionsAndroid,
-  Platform,
-  Button,
-} from 'react-native';
+import { StyleSheet, Image, Platform } from 'react-native';
+import { Button } from '@ui-kitten/components';
 
 import axios from 'axios';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import WeatherWidget from '../components/Weather';
 import CalendarComp from '../components/Calendar';
-import Geolocation from 'react-native-geolocation-service';
+import * as Location from 'expo-location';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   let weather: weatherType;
@@ -23,41 +21,39 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     data: '',
     status: '',
   });
-  const [location, setLocation] = useState<ILocation | undefined>(undefined);
 
+  const navigationRef = useNavigationContainerRef();
   useEffect(() => {
     const GetCurrentWeather = async (): Promise<any> => {
-      Geolocation.getCurrentPosition(
-        async position => {
-          const { latitude, longitude } = position.coords;
-          setLocation({
-            latitude,
-            longitude,
-          });
-          let data = await GetWeatherData(latitude, longitude);
-
-          setWeather({
-            data: data?.data,
-            status: data?.data.status,
-          });
-        },
-        error => {
-          console.log(error.code, error.message);
-        },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+      let location = await Location.getCurrentPositionAsync();
+      let data = await GetWeatherData(
+        location.coords.latitude,
+        location.coords.longitude,
       );
+      setWeather({
+        data: data?.data,
+        status: data?.data.status,
+      });
     };
     GetCurrentWeather();
   }, []);
 
   return (
-    <View style={{ flex: 1 }} themeColor="cloud">
+    <View themeColor="cloud">
       <WeatherWidget weather={weather.data} name={''} />
       <View themeColor="cloud">
-        {/* <Text themeColor="cloud" style={styles.title}>
-          Home
-        </Text> */}
         <CalendarComp></CalendarComp>
+        <Button
+          onPress={() => {
+            if (navigationRef.isReady()) {
+              alert('goback');
+              // Perform navigation if the react navigation is ready to handle actions
+              navigationRef.navigate('Login');
+            } else {
+              alert('nope');
+            }
+          }}
+        ></Button>
       </View>
     </View>
   );
@@ -102,16 +98,10 @@ interface weatherType {
 }
 
 interface locationType {
-  speed: number;
-  longitude: number;
-  latitude: number;
-  accuracy: number;
-  heading: number;
-  altitude: number;
-  altitudeAccuracy: number;
-  floor: number;
-  timestamp: number;
-  fromMockProvider: boolean;
+  coords: {
+    latitude: number;
+    longitude: number;
+  };
 }
 
 interface ILocation {
