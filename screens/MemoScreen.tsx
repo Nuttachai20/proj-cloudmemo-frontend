@@ -3,7 +3,7 @@ import { StyleSheet, TextInput } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { Layout, Input, Button } from '@ui-kitten/components';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import BaseUrl from '../constants/BaseUrl';
 import axios from 'axios';
 import _ from 'lodash';
@@ -20,6 +20,8 @@ const searchMusic = (text: string) => {
       alert(err);
     });
 };
+
+const handleSearch = _.debounce(value => searchMusic(value), 500);
 
 export default function MemoScreen() {
   const [text, setText] = useState('');
@@ -42,8 +44,9 @@ export default function MemoScreen() {
         value={searchUrl}
         onChangeText={nextValue => {
           setSearchUrl(nextValue);
-
-          searchMusic(nextValue);
+          if (nextValue) {
+            handleSearch(nextValue);
+          }
         }}
       />
       <Input
