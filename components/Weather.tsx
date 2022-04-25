@@ -32,7 +32,7 @@ export default function weatherWidget(prop: weatherType) {
   };
 
   const KelvintoCelsius = (temp: number) => {
-    return (temp - 273.15).toFixed(2);
+    return (temp - 273.15).toFixed(0) + 'º';
   };
 
   moment.locale('en');
@@ -49,16 +49,14 @@ export default function weatherWidget(prop: weatherType) {
       <View themeColor="cloud" style={styles.weatherDisplay}>
         <View themeColor="cloud" style={{ width: '30%' }}>
           <WeatherIcon />
-          <Text themeColor="cloud">{KelvintoCelsius(main?.feels_like)}</Text>
+          {/* <Text themeColor="cloud">{KelvintoCelsius(main?.temp)}</Text> */}
           <Text themeColor="cloud">{listWeather()}</Text>
         </View>
         <View themeColor="cloud" style={styles.spilt}>
           <View themeColor="cloud" style={styles.header}>
-            <Image
-              style={styles.stretch}
-              source={require('../assets/images/icon/ic_celsius.svg')}
-            />
-            <Text themeColor="cloud">{KelvintoCelsius(main?.temp)}</Text>
+            <Text themeColor="cloud" style={{ fontSize: 40 }}>
+              {KelvintoCelsius(main?.temp)}
+            </Text>
           </View>
           <View themeColor="cloud" style={styles.header}>
             <Image
@@ -73,6 +71,7 @@ export default function weatherWidget(prop: weatherType) {
               source={require('../assets/images/icon/ic_thermometer_6.svg')}
             />
             <Text themeColor="cloud">{KelvintoCelsius(main?.temp_max)}</Text>
+            <Text themeColor="cloud"></Text>
           </View>
         </View>
       </View>

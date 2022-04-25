@@ -19,6 +19,7 @@ AppRegistry.registerComponent(
   'proj-cloudmemo-frontend'.toLowerCase(),
   () => App,
 );
+Geolocation.requestAuthorization('always');
 
 if (Platform.OS === 'web') {
   const rootTag =
@@ -29,10 +30,8 @@ if (Platform.OS === 'web') {
 
 if (Platform.OS === 'ios') {
   console.log('ios platform');
-
   AppRegistry.registerComponent('proj-cloudmemo-frontend', () => App);
-
-  Geolocation.requestAuthorization('always');
+  Geolocation.requestAuthorization('whenInUse');
 }
 
 export default function App() {

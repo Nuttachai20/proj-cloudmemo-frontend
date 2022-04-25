@@ -35,6 +35,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
             longitude,
           });
           let data = await GetWeatherData(latitude, longitude);
+
           setWeather({
             data: data?.data,
             status: data?.data.status,
@@ -58,14 +59,6 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
         </Text> */}
         <CalendarComp></CalendarComp>
       </View>
-      {/* {location ? (
-        <View>
-          <Text>Latitude: {location.latitude}</Text>
-          <Text>Latitude: {location.longitude}</Text>
-        </View>
-      ) : (
-        <View>Loading...</View>
-      )} */}
     </View>
   );
 }
@@ -77,6 +70,7 @@ const GetWeatherData = (latitude: number, longitude: number) => {
       `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=9ca38f662ad44e37bc3d88934c32bb4d`,
     )
     .then(res => {
+      // console.log('send api');
       return res;
     })
     .catch(error => {
