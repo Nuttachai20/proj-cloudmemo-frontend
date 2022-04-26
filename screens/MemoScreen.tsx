@@ -6,37 +6,91 @@ import { Layout, Input, Button } from '@ui-kitten/components';
 import { useState, useCallback } from 'react';
 import BaseUrl from '../constants/BaseUrl';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import _ from 'lodash';
+import { RootTabScreenProps } from '../types';
 
-const searchMusic = (text: string) => {
-  axios
-    .post(`${BaseUrl.baseurl}youtube/search`, {
-      data: text,
-    })
-    .then(res => {
-      console.log(res);
-    })
-    .catch(err => {
-      alert(err);
-    });
-};
-
-const handleSearch = _.debounce(value => searchMusic(value), 500);
-
-export default function MemoScreen() {
-  const [text, setText] = useState('');
+export default function MemoScreen({ navigation }: RootTabScreenProps<'Home'>) {
+  const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
+  const [desc, setDesc] = useState('');
   const [searchUrl, setSearchUrl] = useState('');
+
+  const searchMusic = async (text: string) => {
+    let token = await AsyncStorage.getItem('access');
+    // axios
+    //   .post(
+    //     `${BaseUrl.baseurl}/youtube/search`,
+    //     {
+    //       data: text,
+    //     },
+    //     {
+    //       headers: { Authorization: `Bearer ${token}` },
+    //     },
+    //   )
+    //   .then(res => {
+    //     console.log(res.data);
+    //     const { data } = res.data;
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
+    console.log('token', token);
+  };
+
+  const handleSearch = _.debounce(value => searchMusic(value), 500);
+
+  const CreateMemo = async (
+    title: string,
+    description: string,
+    musicUrl: string,
+  ) => {
+    let token = await AsyncStorage.getItem('access');
+    axios
+      .post(
+        `${BaseUrl.baseurl}/memo/create`,
+        {
+          title: title,
+          desc: description,
+          weather: 'Weather',
+          music_url: musicUrl,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   return (
     <View themeColor="cloud" style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} />
+      <Text themeColor="cloud" style={styles.title}>
+        Tab Two
+      </Text>
+      {/* <View style={styles.separator} /> */}
       <Input
         label="Title"
         placeholder="Username"
-        value={text}
-        onChangeText={nextValue => setText(nextValue)}
+        value={title}
+        onChangeText={nextValue => setTitle(nextValue)}
+      />
+
+      <Input
+        multiline={true}
+        textStyle={{ minHeight: 100 }}
+        placeholder="Multiline"
+        value={desc}
+        onChangeText={nextValue => setDesc(nextValue)}
+      />
+      <TextInput
+        multiline={true}
+        numberOfLines={10}
+        style={{ height: 200, textAlignVertical: 'top' }}
       />
       <Input
         label="Music"
@@ -44,23 +98,18 @@ export default function MemoScreen() {
         value={searchUrl}
         onChangeText={nextValue => {
           setSearchUrl(nextValue);
-          if (nextValue) {
+          if (nextValue && nextValue !== searchUrl && nextValue !== '') {
             handleSearch(nextValue);
           }
         }}
       />
-      <Input
-        multiline={true}
-        textStyle={{ minHeight: 100 }}
-        placeholder="Multiline"
-        value={text}
-        onChangeText={nextValue => setText(nextValue)}
-      />
-      <TextInput
-        multiline={true}
-        numberOfLines={10}
-        style={{ height: 200, textAlignVertical: 'top' }}
-      />
+
+      <Button
+        onPress={() => CreateMemo(title, desc, searchUrl)}
+        status="primary"
+      >
+        Create Memo
+      </Button>
     </View>
   );
 }

@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import { Icon, Layout, Text, Input, Button } from '@ui-kitten/components';
 import { useEffect, useState } from 'react';
-import ImagePicker from 'react-native-image-picker';
 import BaseUrl from '../constants/BaseUrl';
 import axios from 'axios';
 
@@ -43,7 +42,7 @@ export default function RegisterScreen() {
     }
 
     axios
-      .post(`${BaseUrl.baseurl}user/sign/up`, {
+      .post(`${BaseUrl.baseurl}/user/sign/up`, {
         Email: email,
         Password: password,
         Username: username,

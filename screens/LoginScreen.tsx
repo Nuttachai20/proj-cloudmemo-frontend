@@ -4,9 +4,12 @@ import { Layout, Text, Input, Button } from '@ui-kitten/components';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BaseUrl from '../constants/BaseUrl';
+import { RootTabScreenProps } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function LoginScreen() {
+export default function LoginScreen({
+  navigation,
+}: RootTabScreenProps<'Home'>) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -19,13 +22,17 @@ export default function LoginScreen() {
     console.log('username', username);
     console.log('password', password);
     axios
-      .post(`${BaseUrl.baseurl}user/sign/in`, {
+      .post(`${BaseUrl.baseurl}/user/sign/in`, {
         Email: username,
         Password: password,
       })
-      .then(res => {
-        console.log(res);
-        window.location.href = '/';
+      .then(async (res: any) => {
+        const { access, refresh } = res.data.tokens;
+
+        await AsyncStorage.setItem('access', access);
+        await AsyncStorage.setItem('refresh', refresh);
+
+        navigation.navigate('Home');
       })
       .catch(err => {
         alert(err);

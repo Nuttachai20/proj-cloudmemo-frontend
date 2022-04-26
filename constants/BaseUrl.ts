@@ -1,3 +1,3 @@
 export default {
-    baseurl: "https://cloud-memo-backend.herokuapp.com/"
+    baseurl: "https://cloud-memo-backend.herokuapp.com"
 }

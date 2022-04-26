@@ -17,8 +17,8 @@ export default function UserScreen({ navigation }: RootTabScreenProps<'User'>) {
       <Text style={styles.title}>Tab Three</Text>
       <Button
         onPress={() => {
-          alert('goback');
-          navigationRef.navigate('Login');
+          alert('logout');
+          navigation.navigate('Login');
         }}
       >
         logout

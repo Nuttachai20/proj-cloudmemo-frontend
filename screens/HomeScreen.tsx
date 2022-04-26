@@ -39,21 +39,15 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   }, []);
 
   return (
-    <View themeColor="cloud">
+    <View style={{ height: '100%' }} themeColor="cloud">
       <WeatherWidget weather={weather.data} name={''} />
       <View themeColor="cloud">
         <CalendarComp></CalendarComp>
-        <Button
+        {/* <Button
           onPress={() => {
-            if (navigationRef.isReady()) {
-              alert('goback');
-              // Perform navigation if the react navigation is ready to handle actions
-              navigationRef.navigate('Login');
-            } else {
-              alert('nope');
-            }
+            navigation.navigate('Login');
           }}
-        ></Button>
+        ></Button> */}
       </View>
     </View>
   );
@@ -95,16 +89,4 @@ const styles = StyleSheet.create({
 interface weatherType {
   data: any;
   status: any;
-}
-
-interface locationType {
-  coords: {
-    latitude: number;
-    longitude: number;
-  };
-}
-
-interface ILocation {
-  latitude: number;
-  longitude: number;
 }
