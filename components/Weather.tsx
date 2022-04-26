@@ -2,22 +2,22 @@ import { Layout, Input, Button } from '@ui-kitten/components';
 import { TouchableWithoutFeedback } from '@ui-kitten/components/devsupport';
 import { StyleSheet, Image } from 'react-native';
 import { Text, View } from '../components/Themed';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import moment from 'moment';
-
-const WeatherIcon = () => {
-  return (
-    <View themeColor="cloud">
-      <Image
-        style={styles.stretch}
-        source={require('../assets/images/icon/icweather1.png')}
-      />
-    </View>
-  );
-};
+import { useEffect, useState } from 'react';
 
 export default function weatherWidget(prop: weatherType) {
   const { weather, base, main, name } = prop.weather;
+  const [weatherColor, setWeatherColor] = useState('');
+
+  useEffect(() => {
+    const SetWeather = async (): Promise<any> => {
+      let weather = await AsyncStorage.getItem('weather');
+      setWeatherColor(`${weather}`);
+    };
+    SetWeather();
+  }, []);
 
   const listWeather = () => {
     let text: string;
@@ -35,42 +35,57 @@ export default function weatherWidget(prop: weatherType) {
     return (temp - 273.15).toFixed(0) + 'º';
   };
 
+  const WeatherIcon = () => {
+    return (
+      <View themeColor={weatherColor}>
+        <Image
+          style={styles.stretch}
+          source={require('../assets/images/icon/icweather1.png')}
+        />
+      </View>
+    );
+  };
+
   moment.locale('en');
   var dt: Date = new Date();
 
   return (
-    <View themeColor="cloud" style={styles.container}>
-      <Text themeColor="cloud" style={styles.header}>
+    <View themeColor={weatherColor} style={styles.container}>
+      <Text themeColor={weatherColor} style={styles.header}>
         Today, {moment(dt).format('dddd DD  MMMM')}
       </Text>
-      <Text themeColor="cloud" style={styles.header}>
+      <Text themeColor={weatherColor} style={styles.header}>
         {name}
       </Text>
-      <View themeColor="cloud" style={styles.weatherDisplay}>
-        <View themeColor="cloud" style={{ width: '40%' }}>
+      <View themeColor={weatherColor} style={styles.weatherDisplay}>
+        <View themeColor={weatherColor} style={{ width: '40%' }}>
           <WeatherIcon />
           {/* <Text themeColor="cloud">{KelvintoCelsius(main?.temp)}</Text> */}
-          <Text themeColor="cloud">{listWeather()}</Text>
+          <Text themeColor={weatherColor}>{listWeather()}</Text>
         </View>
-        <View themeColor="cloud" style={styles.spilt}>
-          <View themeColor="cloud" style={styles.header}>
-            <Text themeColor="cloud" style={{ fontSize: 40 }}>
+        <View themeColor={weatherColor} style={styles.spilt}>
+          <View themeColor={weatherColor} style={styles.header}>
+            <Text themeColor={weatherColor} style={{ fontSize: 40 }}>
               {KelvintoCelsius(main?.temp)}
             </Text>
           </View>
-          <View themeColor="cloud" style={styles.header}>
+          <View themeColor={weatherColor} style={styles.header}>
             <Image
               style={styles.stretch}
               source={require('../assets/images/icon/icthermometer1.png')}
             />
-            <Text themeColor="cloud">{KelvintoCelsius(main?.temp_min)}</Text>
+            <Text themeColor={weatherColor}>
+              {KelvintoCelsius(main?.temp_min)}
+            </Text>
           </View>
-          <View themeColor="cloud" style={styles.header}>
+          <View themeColor={weatherColor} style={styles.header}>
             <Image
               style={styles.stretch}
               source={require('../assets/images/icon/icthermometer6.png')}
             />
-            <Text themeColor="cloud">{KelvintoCelsius(main?.temp_max)}</Text>
+            <Text themeColor={weatherColor}>
+              {KelvintoCelsius(main?.temp_max)}
+            </Text>
           </View>
         </View>
       </View>

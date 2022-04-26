@@ -10,35 +10,35 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import _ from 'lodash';
 import { RootTabScreenProps } from '../types';
 
+const searchMusic = async (text: string) => {
+  let token = await AsyncStorage.getItem('access');
+  axios
+    .post(
+      `${BaseUrl.baseurl}/youtube/search`,
+      {
+        data: text,
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    )
+    .then(res => {
+      console.log(res.data);
+      const { data } = res.data;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  console.log('token', token);
+};
+
+const handleSearch = _.debounce(value => searchMusic(value), 500);
+
 export default function MemoScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const [desc, setDesc] = useState('');
   const [searchUrl, setSearchUrl] = useState('');
-
-  const searchMusic = async (text: string) => {
-    let token = await AsyncStorage.getItem('access');
-    // axios
-    //   .post(
-    //     `${BaseUrl.baseurl}/youtube/search`,
-    //     {
-    //       data: text,
-    //     },
-    //     {
-    //       headers: { Authorization: `Bearer ${token}` },
-    //     },
-    //   )
-    //   .then(res => {
-    //     console.log(res.data);
-    //     const { data } = res.data;
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-    console.log('token', token);
-  };
-
-  const handleSearch = _.debounce(value => searchMusic(value), 500);
 
   const CreateMemo = async (
     title: string,
@@ -81,17 +81,14 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Home'>) {
       />
 
       <Input
+        label="description"
         multiline={true}
         textStyle={{ minHeight: 100 }}
         placeholder="Multiline"
         value={desc}
         onChangeText={nextValue => setDesc(nextValue)}
       />
-      <TextInput
-        multiline={true}
-        numberOfLines={10}
-        style={{ height: 200, textAlignVertical: 'top' }}
-      />
+
       <Input
         label="Music"
         placeholder="Input your music title here"

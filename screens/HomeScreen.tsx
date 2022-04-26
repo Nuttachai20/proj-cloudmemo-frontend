@@ -8,10 +8,7 @@ import { useEffect, useState } from 'react';
 import WeatherWidget from '../components/Weather';
 import CalendarComp from '../components/Calendar';
 import * as Location from 'expo-location';
-import {
-  NavigationContainer,
-  useNavigationContainerRef,
-} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   let weather: weatherType;
@@ -22,7 +19,8 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     status: '',
   });
 
-  const navigationRef = useNavigationContainerRef();
+  const [weatherColor, setWeatherColor] = useState('');
+
   useEffect(() => {
     const GetCurrentWeather = async (): Promise<any> => {
       let location = await Location.getCurrentPositionAsync();
@@ -34,14 +32,17 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
         data: data?.data,
         status: data?.data.status,
       });
+      let weatherTheme = await AsyncStorage.getItem('weather');
+
+      setWeatherColor(`${weatherTheme}`);
     };
     GetCurrentWeather();
   }, []);
 
   return (
-    <View style={{ height: '100%' }} themeColor="cloud">
+    <View style={{ height: '100%' }} themeColor={weatherColor}>
       <WeatherWidget weather={weather.data} name={''} />
-      <View themeColor="cloud">
+      <View themeColor={weatherColor}>
         <CalendarComp></CalendarComp>
         {/* <Button
           onPress={() => {
@@ -61,6 +62,8 @@ const GetWeatherData = (latitude: number, longitude: number) => {
     )
     .then(res => {
       // console.log('send api');
+      console.log(res.data.weather[0].main);
+      AsyncStorage.setItem('weather', res.data.weather[0].main);
       return res;
     })
     .catch(error => {

@@ -4,9 +4,14 @@
  */
 
 import { Text as DefaultText, View as DefaultView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+
+const weather = async () => {
+  return await AsyncStorage.getItem('weather');
+};
 
 export function useThemeColor(
   theme: keyof typeof Colors,
@@ -41,7 +46,7 @@ export function Text(props: TextProps) {
   // console.log(' themeColor:', themeColor);
 
   const color = useThemeColor(
-    themeColor === 'cloud' ? 'cloud' : 'dark',
+    themeColor === 'cloud' ? 'cloud' : themeColor === 'Rain' ? 'light' : 'dark',
     'text',
   );
 
@@ -53,7 +58,7 @@ export function View(props: ViewProps) {
   // console.log(themeColor);
 
   const backgroundColor = useThemeColor(
-    themeColor === 'cloud' ? 'cloud' : 'dark',
+    themeColor === 'cloud' ? 'cloud' : themeColor === 'Rain' ? 'light' : 'dark',
     'background',
   );
 

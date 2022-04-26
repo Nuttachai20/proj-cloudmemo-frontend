@@ -14,7 +14,8 @@ export default function UserScreen({ navigation }: RootTabScreenProps<'User'>) {
   const navigationRef = useNavigationContainerRef();
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Three</Text>
+      <Text style={styles.title}>User</Text>
+
       <Button
         onPress={() => {
           alert('logout');
@@ -28,7 +29,6 @@ export default function UserScreen({ navigation }: RootTabScreenProps<'User'>) {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="/screens/MemoScreen.tsx" />
     </View>
   );
 }
