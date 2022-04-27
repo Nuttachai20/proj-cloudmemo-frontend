@@ -46,7 +46,11 @@ export function Text(props: TextProps) {
   // console.log(' themeColor:', themeColor);
 
   const color = useThemeColor(
-    themeColor === 'cloud' ? 'cloud' : themeColor === 'Rain' ? 'light' : 'dark',
+    themeColor === 'Clouds'
+      ? 'cloud'
+      : themeColor === 'Rain'
+      ? 'light'
+      : 'dark',
     'text',
   );
 
@@ -58,7 +62,11 @@ export function View(props: ViewProps) {
   // console.log(themeColor);
 
   const backgroundColor = useThemeColor(
-    themeColor === 'cloud' ? 'cloud' : themeColor === 'Rain' ? 'light' : 'dark',
+    themeColor === 'Clouds'
+      ? 'cloud'
+      : themeColor === 'Rain'
+      ? 'light'
+      : 'dark',
     'background',
   );
 

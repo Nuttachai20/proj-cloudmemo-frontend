@@ -9,6 +9,7 @@ import WeatherWidget from '../components/Weather';
 import CalendarComp from '../components/Calendar';
 import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BaseUrl from '../constants/BaseUrl';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   let weather: weatherType;
@@ -35,6 +36,13 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       let weatherTheme = await AsyncStorage.getItem('weather');
 
       setWeatherColor(`${weatherTheme}`);
+    };
+
+    const GetAllMemo = async (id: number): Promise<any> => {
+      axios
+        .get(`${BaseUrl.baseurl}/memo/get/all/${id}`)
+        .then(res => {})
+        .catch(err => console.log(err));
     };
     GetCurrentWeather();
   }, []);

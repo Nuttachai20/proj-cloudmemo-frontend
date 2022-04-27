@@ -70,7 +70,7 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Home'>) {
   return (
     <View themeColor="cloud" style={styles.container}>
       <Text themeColor="cloud" style={styles.title}>
-        Tab Two
+        Memo
       </Text>
       {/* <View style={styles.separator} /> */}
       <Input

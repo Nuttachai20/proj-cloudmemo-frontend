@@ -18,6 +18,9 @@ const linking: LinkingOptions<RootStackParamList> = {
           Home: {
             screens: {
               HomeScreen: 'one',
+              // screen:{
+              //   MemoDetail : 'detail'
+              // }
             },
           },
           Memo: {
