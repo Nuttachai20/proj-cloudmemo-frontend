@@ -9,12 +9,26 @@ import {
 } from '@react-navigation/native';
 
 import { RootTabScreenProps } from '../types';
+import { useEffect, useState } from 'react';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function UserScreen({ navigation }: RootTabScreenProps<'User'>) {
+  const [weatherColor, setWeatherColor] = useState('');
+
+  useEffect(() => {
+    const getWeather = async (): Promise<any> => {
+      let weather = await AsyncStorage.getItem('weather');
+      setWeatherColor(`${weather}`);
+    };
+    getWeather();
+  }, []);
   const navigationRef = useNavigationContainerRef();
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>User</Text>
+    <View themeColor={weatherColor} style={styles.container}>
+      <Text themeColor={weatherColor} style={styles.title}>
+        User
+      </Text>
 
       <Button
         onPress={() => {
@@ -24,11 +38,7 @@ export default function UserScreen({ navigation }: RootTabScreenProps<'User'>) {
       >
         logout
       </Button>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
+      <View themeColor={weatherColor} style={styles.separator} />
     </View>
   );
 }

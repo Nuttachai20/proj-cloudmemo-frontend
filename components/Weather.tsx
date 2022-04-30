@@ -8,7 +8,7 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 
 export default function weatherWidget(prop: weatherType) {
-  const { weather, base, main, name } = prop.weather;
+  const { weather, main, name } = prop.weather;
   const [weatherColor, setWeatherColor] = useState('');
 
   useEffect(() => {
@@ -24,7 +24,6 @@ export default function weatherWidget(prop: weatherType) {
     if (weather) {
       let item: exArray;
       for (item of weather) {
-        console.log('item:', item);
         text = item.description;
         return text;
       }

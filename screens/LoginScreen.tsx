@@ -27,8 +27,9 @@ export default function LoginScreen({
         Password: password,
       })
       .then(async (res: any) => {
-        const { access, refresh } = res.data.tokens;
+        const { access, refresh, user } = res.data.tokens;
 
+        await AsyncStorage.setItem('user', user);
         await AsyncStorage.setItem('access', access);
         await AsyncStorage.setItem('refresh', refresh);
 
