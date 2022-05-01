@@ -7,6 +7,7 @@ import {
   LocaleConfig,
 } from 'react-native-calendars';
 import { StyleSheet, View } from 'react-native';
+import { RootTabScreenProps } from '../types';
 
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -51,7 +52,7 @@ LocaleConfig.locales['en'] = {
 };
 LocaleConfig.defaultLocale = 'en';
 
-export default function CalendarComp() {
+export function CalendarComp({ navigation }: RootTabScreenProps<'Home'>) {
   return (
     <View style={[styles.container, styles.shadowProp]}>
       <Calendar

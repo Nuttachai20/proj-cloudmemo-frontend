@@ -9,8 +9,11 @@ import { Icon, Layout, Text, Input, Button } from '@ui-kitten/components';
 import { useEffect, useState } from 'react';
 import BaseUrl from '../constants/BaseUrl';
 import axios from 'axios';
+import { RootStackScreenProps } from '../types';
 
-export default function RegisterScreen() {
+export default function RegisterScreen({
+  navigation,
+}: RootStackScreenProps<'Register'>) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -88,6 +91,13 @@ export default function RegisterScreen() {
         secureTextEntry={secureTextEntry}
         onChangeText={nextValue => setRePassword(nextValue)}
       />
+      <Text
+        onPress={() => {
+          navigation.navigate('Login');
+        }}
+      >
+        already have account?
+      </Text>
       <Button
         style={styles.button}
         status="primary"

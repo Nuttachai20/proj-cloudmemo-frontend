@@ -4,12 +4,12 @@ import { Layout, Text, Input, Button } from '@ui-kitten/components';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BaseUrl from '../constants/BaseUrl';
-import { RootTabScreenProps } from '../types';
+import { RootStackScreenProps, RootTabScreenProps } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen({
   navigation,
-}: RootTabScreenProps<'User'>) {
+}: RootStackScreenProps<'Login'>) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -33,7 +33,7 @@ export default function LoginScreen({
         await AsyncStorage.setItem('access', access);
         await AsyncStorage.setItem('refresh', refresh);
 
-        navigation.navigate('Home');
+        navigation.navigate('Root');
       })
       .catch(err => {
         alert(err);
@@ -61,7 +61,7 @@ export default function LoginScreen({
       <Text
         style={styles.captionText}
         onPress={() => {
-          window.location.href = 'register';
+          navigation.navigate('Register');
         }}
       >
         Doesn't have account?
