@@ -23,6 +23,7 @@ import MemoScreen from '../screens/MemoScreen';
 import UserScreen from '../screens/UserScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
+import MemoDetailScreen from '../screens/MemoDetailScreen';
 import {
   RootStackParamList,
   RootTabParamList,
@@ -71,6 +72,7 @@ function RootNavigator() {
       />
 
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="MemoDetail" component={MemoDetailScreen} />
         <Stack.Screen name="Modal" component={ModalScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
@@ -101,7 +103,6 @@ function BottomTabNavigator() {
         name="Home"
         component={HomeScreen}
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
-          // title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           // headerRight: () => (
           //   <Pressable
@@ -124,7 +125,6 @@ function BottomTabNavigator() {
         name="Memo"
         component={MemoScreen}
         options={{
-          title: 'Memo',
           tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
         }}
       />

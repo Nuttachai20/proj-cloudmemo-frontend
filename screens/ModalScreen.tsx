@@ -109,7 +109,7 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Memo'>) {
         <Input
           label="Title"
           style={{ width: '80%', marginBottom: 10 }}
-          placeholder="Username"
+          placeholder="Title"
           value={title}
           onChangeText={nextValue => setTitle(nextValue)}
         />
@@ -118,24 +118,52 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Memo'>) {
           style={{ width: '80%', marginBottom: 10 }}
           multiline={true}
           textStyle={{ minHeight: 100 }}
-          placeholder="Multiline"
+          placeholder="Description"
           value={desc}
           onChangeText={nextValue => setDesc(nextValue)}
         />
-        <Input
-          label="Music"
-          style={{ width: '80%', marginBottom: 10 }}
-          placeholder="Input your music title here"
-          value={searchInput}
-          onChangeText={nextValue => {
-            setSearchInput(nextValue);
-          }}
-        />
-        <Button onPress={() => searchMusic(searchInput)} status="primary">
-          Search memo
-        </Button>
-        {musicCards.length > 0 ? (
-          <ScrollView>
+
+        {url.Title ? (
+          <View>
+            <Text themeColor={weatherColor}>{url.Title}</Text>
+            <Pressable
+              onPress={() => {
+                setUrl({ Title: '', YoutubeId: '' });
+              }}
+            >
+              <TabBarIcon name="eject" color="#fff" />
+            </Pressable>
+          </View>
+        ) : (
+          <View
+            themeColor={weatherColor}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <Input
+              label="Music"
+              style={{ width: '75%', marginBottom: 10, marginRight: 5 }}
+              placeholder="Input your music title here"
+              value={searchInput}
+              onChangeText={nextValue => {
+                setSearchInput(nextValue);
+              }}
+            />
+            <Pressable
+              onPress={() => {
+                searchMusic(searchInput);
+              }}
+            >
+              <TabBarIcon name="search" color="#fff" />
+            </Pressable>
+          </View>
+        )}
+
+        {musicCards?.length > 0 && url.YoutubeId == '' ? (
+          <ScrollView style={{ width: '90%' }}>
             {musicCards.slice().map(item => {
               return (
                 <TouchableOpacity
@@ -151,16 +179,21 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Memo'>) {
                       uri: `https://img.youtube.com/vi/${item.YoutubeId}/default.jpg`,
                     }}
                   />
-                  <Text style={{ paddingLeft: 10 }} themeColor={weatherColor}>
+                  <Text
+                    style={{ paddingLeft: 10, width: '85%' }}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    themeColor={weatherColor}
+                  >
                     {item.Title}
                   </Text>
                 </TouchableOpacity>
               );
             })}
           </ScrollView>
-        ) : (
-          ''
-        )}
+        ) : null}
+
+        {url.YoutubeId !== '' ? null : null}
 
         <Button
           onPress={() => CreateMemo(title, desc, url.YoutubeId)}
@@ -168,174 +201,10 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Memo'>) {
         >
           Create Memo
         </Button>
-        <Pressable
-          onPress={() => navigation.navigate('Modal')}
-          style={({ pressed }) => ({
-            opacity: pressed ? 0.5 : 1,
-          })}
-        >
-          <Text>add</Text>
-        </Pressable>
       </View>
     );
   }
 }
-
-// export default function ModalScreen({
-//   navigation,
-// }: RootTabScreenProps<'Memo'>) {
-//   const [title, setTitle] = useState('');
-//   const [url, setUrl] = useState<MusicCard>({ Title: '', YoutubeId: '' });
-//   const [desc, setDesc] = useState('');
-//   const [searchInput, setSearchInput] = useState('');
-//   const [token, setToken] = useState('');
-//   const [musicCards, setMusicCards] = useState<MusicCards>([]);
-
-//   // const [user, setUser] = useState('');
-
-//   const [weatherColor, setWeatherColor] = useState('');
-
-//   useEffect(() => {
-//     const getWeather = async (): Promise<any> => {
-//       let weather = await AsyncStorage.getItem('weather');
-//       let user_info = await AsyncStorage.getItem('user');
-//       let token = await AsyncStorage.getItem('access');
-//       setWeatherColor(`${weather}`);
-//       setToken(`${token}`);
-//       // setUser(user_info);
-//     };
-//     getWeather();
-//   }, []);
-
-//   const searchMusic = async (text: string) => {
-//     axios
-//       .post(
-//         `${BaseUrl.baseurl}/youtube/search`,
-//         {
-//           data: text,
-//         },
-//         {
-//           headers: { Authorization: `Bearer ${token}` },
-//         },
-//       )
-//       .then(res => {
-//         console.log('res.data', res.data);
-//         const { data } = res.data;
-//         console.log(data);
-//         setMusicCards(data);
-//       })
-//       .catch(err => {
-//         console.log(err);
-//       });
-//     console.log('token', token);
-//   };
-
-//   const CreateMemo = async (
-//     title: string,
-//     description: string,
-//     musicUrl: string,
-//   ) => {
-//     let token = await AsyncStorage.getItem('access');
-//     axios
-//       .post(
-//         `${BaseUrl.baseurl}/memo/create`,
-//         {
-//           title: title,
-//           desc: description,
-//           weather: weatherColor,
-//           music_url: musicUrl,
-//         },
-//         {
-//           headers: { Authorization: `Bearer ${token}` },
-//         },
-//       )
-//       .then(res => {
-//         console.log(res.data);
-//       })
-//       .catch(err => {
-//         console.log(err);
-//       });
-//   };
-
-//   return (
-//     <View>
-//       <View>
-//         <Pressable
-//           onPress={() => {
-//             navigation.navigate('Memo');
-//           }}
-//         >
-//
-//             <TabBarIcon name="arrow-left" color="#fff" />
-//
-//         </Pressable>
-//         <Text themeColor={weatherColor} style={styles.title}>
-//           Memo
-//         </Text>
-//       </View>
-//       <View style={styles.container}>
-//         <ScrollView>
-//           <Input
-//             label="Title"
-//             placeholder="Username"
-//             value={title}
-//             onChangeText={nextValue => setTitle(nextValue)}
-//           />
-//           <Input
-//             label="description"
-//             multiline={true}
-//             textStyle={{ minHeight: 100 }}
-//             placeholder="Desciption"
-//             value={desc}
-//             onChangeText={nextValue => setDesc(nextValue)}
-//           />
-//           <Input
-//             label="Music"
-//             placeholder="Input your music title here"
-//             value={searchInput}
-//             onChangeText={nextValue => {
-//               setSearchInput(nextValue);
-//             }}
-//           />
-//           <Button onPress={() => searchMusic(searchInput)} status="primary">
-//             Search memo
-//           </Button>
-
-//           <Button
-//             onPress={() => CreateMemo(title, desc, url.YoutubeId)}
-//             status="primary"
-//           >
-//             Create Memo
-//           </Button>
-//           <Text>{musicCards.length}</Text>
-//           {musicCards.length > 0
-//             ? musicCards.slice().map(item => {
-//                 return (
-//                   <TouchableOpacity
-//                     onPress={() => {
-//                       setUrl(item);
-//                     }}
-//                     style={[styles.card]}
-//                     key={item.YoutubeId}
-//                   >
-//                     <Image
-//                       style={styles.stretch}
-//                       source={{
-//                         uri: `https://img.youtube.com/vi/${item.YoutubeId}/default.jpg`,
-//                       }}
-//                     />
-//                     <Text style={{ paddingLeft: 10 }} themeColor={weatherColor}>
-//                       {item.Title}
-//                     </Text>
-//                   </TouchableOpacity>
-//                 );
-//               })
-//             : ''}
-//         </ScrollView>
-//       </View>
-//     </View>
-//   );
-// }
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
@@ -362,14 +231,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: '#fff',
+    width: '100%',
     color: '#000',
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#000',
   },
   stretch: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     resizeMode: 'contain',
   },
 });

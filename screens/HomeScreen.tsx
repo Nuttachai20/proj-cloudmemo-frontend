@@ -7,6 +7,7 @@ import { RootTabScreenProps } from '../types';
 import { useEffect, useState } from 'react';
 import WeatherWidget from '../components/Weather';
 import moment from 'moment';
+import _ from 'lodash';
 
 import {
   Calendar,
@@ -78,6 +79,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     Image: '',
   });
   const [memo, setMemo] = useState<MemoType>([]);
+  const [memoDate, setMemoDate] = useState({});
 
   useEffect(() => {
     const GetCurrentWeather = async (): Promise<any> => {
@@ -95,40 +97,54 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 
       let token = await AsyncStorage.getItem('access');
       setToken(`${token}`);
+      if (!token) navigation.navigate('Login');
 
       let user_info = await AsyncStorage.getItem('user');
+      if (user_info == null) navigation.navigate('Login');
+
       console.log('user_info', user_info);
 
-      if (user_info !== null) {
-        let User = JSON.parse(user_info);
-        let Memos = await GetAllMemo(User.ID, `${token}`);
-        // console.log(Memos);
-
-        let memo_array = [];
-        let map_memo: any;
-
-        for (let item of Memos) {
-          map_memo = {
-            [`${moment(item.CreatedAt).format('YYYY-MM-DD')}`]: {
-              marked: true,
-            },
-          };
-          memo_array.push(map_memo);
-        }
-        // console.log(memo_array);
-
-        setUser({
-          ID: User.ID,
-          Email: User.Email,
-          Image: User.Image,
-          Username: User.Username,
-        });
-        setMemo(Memos);
+      let User = JSON.parse(`${user_info}`);
+      let Memos = await GetAllMemo(User.ID, `${token}`);
+      let map_string: string = '';
+      for (let i of Memos) {
+        map_string =
+          map_string +
+          `${map_string == '' ? '' : ','}"${moment(i.CreatedAt).format(
+            'YYYY-MM-DD',
+          )}":{"marked": true,"selected": true}`;
       }
+      map_string = '{' + map_string + '}';
+      console.log(JSON.parse(map_string));
+
+      setUser({
+        ID: User.ID,
+        Email: User.Email,
+        Image: User.Image,
+        Username: User.Username,
+      });
+      setMemoDate(JSON.parse(map_string));
+      setMemo(Memos);
     };
 
     GetCurrentWeather();
   }, []);
+
+  const ShowDetail = (date: any) => {
+    let selectedMemo = memo.find(i => {
+      return moment(i.CreatedAt).format('YYYY-MM-DD') == date.dateString;
+    });
+    if (selectedMemo) {
+      console.log('selectedMemo:', selectedMemo);
+      AsyncStorage.setItem('memo', JSON.stringify(selectedMemo))
+        .then(() => {
+          navigation.navigate('MemoDetail');
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  };
 
   return (
     <View style={{ height: '100%' }} themeColor={weatherColor}>
@@ -140,17 +156,12 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       >
         <Calendar
           style={{ backgroundColor: '#fff' }}
-          markedDates={{
-            '2022-04-15': {
-              selected: true,
-              marked: true,
-              selectedColor: 'blue',
-            },
-            '2022-04-14': { marked: true },
-            '2022-04-13': { marked: true, dotColor: 'red', activeOpacity: 0 },
-            '2022-04-12': { disabled: true, disableTouchEvent: true },
-          }}
+          markedDates={memoDate}
           hideArrows={false}
+          onDayPress={day => {
+            // console.log('selected day', day);
+            ShowDetail(day);
+          }}
           theme={{
             backgroundColor: '#ffffff',
             calendarBackground: '#ffffff',
@@ -207,6 +218,19 @@ const GetAllMemo = (id: number | undefined, token: string) => {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then(res => {
+      // let memo_array = [];
+      // let map_memo: any;
+
+      // for (let item of Memos) {
+      //   map_memo = {
+      //     [`${moment(item.CreatedAt).format('YYYY-MM-DD')}`]: {
+      //       marked: true,
+      //     },
+      //   };
+      //   console.log('map_memo:', map_memo);
+      //   // console.log('...map_memo:', ...map_memo);
+      //   memo_array.push(map_memo);
+      // }
       return res.data.data;
     })
 
@@ -275,4 +299,6 @@ interface Memo {
   SharedToken: string;
 }
 
-interface MemoDate {}
+interface MemoDate {
+  [id: string]: { marked: boolean; select: boolean };
+}

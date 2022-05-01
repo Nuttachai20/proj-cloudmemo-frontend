@@ -4,7 +4,7 @@ import { Layout, Text, Input, Button } from '@ui-kitten/components';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BaseUrl from '../constants/BaseUrl';
-import { RootStackScreenProps, RootTabScreenProps } from '../types';
+import { RootStackScreenProps } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen({

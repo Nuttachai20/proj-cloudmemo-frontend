@@ -23,7 +23,6 @@ export default function UserScreen({ navigation }: RootTabScreenProps<'User'>) {
     };
     getWeather();
   }, []);
-  const navigationRef = useNavigationContainerRef();
   return (
     <View themeColor={weatherColor} style={styles.container}>
       <Text themeColor={weatherColor} style={styles.title}>

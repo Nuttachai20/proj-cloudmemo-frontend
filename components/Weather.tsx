@@ -37,10 +37,22 @@ export default function weatherWidget(prop: weatherType) {
   const WeatherIcon = () => {
     return (
       <View themeColor={weatherColor}>
-        <Image
-          style={styles.stretch}
-          source={require('../assets/images/icon/icweather1.png')}
-        />
+        {weatherColor == 'Cloud' ? (
+          <Image
+            style={styles.stretch}
+            source={require('../assets/images/icon/icweather1.png')}
+          />
+        ) : weatherColor == 'Rain' ? (
+          <Image
+            style={styles.stretch}
+            source={require('../assets/images/icon/icweather22.png')}
+          />
+        ) : (
+          <Image
+            style={styles.stretch}
+            source={require('../assets/images/icon/icweather1.png')}
+          />
+        )}
       </View>
     );
   };

@@ -18,15 +18,11 @@ const linking: LinkingOptions<RootStackParamList> = {
           Home: {
             screens: {
               HomeScreen: 'one',
-              // screen:{
-              //   MemoDetail : 'detail'
-              // }
             },
           },
           Memo: {
             screens: {
               MemoScreen: 'two',
-              AddMemo : 'add'
             },
           },
           User: {
@@ -38,6 +34,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       },
       Login: 'login',
       Register : 'register',
+      MemoDetail: 'memoDetail',
       Modal: 'modal',
       NotFound: '*',
     },
