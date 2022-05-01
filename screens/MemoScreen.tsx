@@ -4,7 +4,10 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
+
+import { FontAwesome } from '@expo/vector-icons';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -16,7 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import _ from 'lodash';
 import { RootTabScreenProps } from '../types';
 
-export default function MemoScreen({ navigation }: RootTabScreenProps<'Home'>) {
+export default function MemoScreen({ navigation }: RootTabScreenProps<'Memo'>) {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState<MusicCard>({ Title: '', YoutubeId: '' });
   const [desc, setDesc] = useState('');
@@ -52,9 +55,8 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Home'>) {
         },
       )
       .then(res => {
-        console.log(res.data);
-        const { data } = res.data;
-        setMusicCards(data);
+        console.log(res.data.data);
+        setMusicCards(res.data.data);
       })
       .catch(err => {
         console.log(err);
@@ -91,74 +93,29 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Home'>) {
 
   return (
     <View themeColor={weatherColor} style={styles.container}>
-      <Text themeColor={weatherColor} style={styles.title}>
-        Memo
-      </Text>
-      {/* <View style={styles.separator} /> */}
-      <Input
-        label="Title"
-        placeholder="Username"
-        value={title}
-        onChangeText={nextValue => setTitle(nextValue)}
-      />
-      <Input
-        label="description"
-        multiline={true}
-        textStyle={{ minHeight: 100 }}
-        placeholder="Multiline"
-        value={desc}
-        onChangeText={nextValue => setDesc(nextValue)}
-      />
-      <Input
-        label="Music"
-        placeholder="Input your music title here"
-        value={searchInput}
-        onChangeText={nextValue => {
-          setSearchInput(nextValue);
-        }}
-      />
-      <Button onPress={() => searchMusic(searchInput)} status="primary">
-        Search memo
-      </Button>
-      <Button
-        onPress={() => CreateMemo(title, desc, url.YoutubeId)}
-        status="primary"
+      <Pressable
+        onPress={() => navigation.navigate('Modal')}
+        style={({ pressed }) => ({
+          opacity: pressed ? 0.5 : 1,
+        })}
       >
-        Create Memo
-      </Button>
-
-      <ScrollView>
-        {musicCards.length > 0
-          ? musicCards.slice().map(item => {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    setUrl(item);
-                  }}
-                  style={[styles.card]}
-                  key={item.YoutubeId}
-                >
-                  <Image
-                    style={styles.stretch}
-                    source={{
-                      uri: `https://img.youtube.com/vi/${item.YoutubeId}/default.jpg`,
-                    }}
-                  />
-                  <Text style={{ paddingLeft: 10 }} themeColor={weatherColor}>
-                    {item.Title}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })
-          : ''}
-      </ScrollView>
+        <TabBarIcon name="plus-circle" color="#000" />
+      </Pressable>
     </View>
   );
+}
+
+function TabBarIcon(props: {
+  name: React.ComponentProps<typeof FontAwesome>['name'];
+  color: string;
+}) {
+  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   title: {

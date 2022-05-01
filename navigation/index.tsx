@@ -64,15 +64,16 @@ function RootNavigator() {
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
         options={{ title: 'Oops!' }}
       />
+
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -123,15 +124,14 @@ function BottomTabNavigator() {
         name="Memo"
         component={MemoScreen}
         options={{
-          title: 'add',
-          tabBarIcon: ({ color }) => <TabBarIcon name="pencil" color={color} />,
+          title: 'Memo',
+          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
         }}
       />
       <BottomTab.Screen
         name="User"
         component={UserScreen}
         options={{
-          title: 'user',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />

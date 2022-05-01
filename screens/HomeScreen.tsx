@@ -21,6 +21,13 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   });
 
   const [weatherColor, setWeatherColor] = useState('');
+  const [token, setToken] = useState('');
+  const [user, setUser] = useState<userType>({
+    Username: '',
+    Email: '',
+    Image: '',
+  });
+  const [memo, setMemo] = useState<MemoType>([]);
 
   useEffect(() => {
     const GetCurrentWeather = async (): Promise<any> => {
@@ -34,16 +41,30 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
         status: data?.data.status,
       });
       let weatherTheme = await AsyncStorage.getItem('weather');
-
       setWeatherColor(`${weatherTheme}`);
+
+      let token = await AsyncStorage.getItem('access');
+      setToken(`${token}`);
+
+      let user_info = await AsyncStorage.getItem('user');
+      console.log('user_info', user_info);
+
+      if (user_info !== null) {
+        let User = JSON.parse(user_info);
+        console.log('User', User.ID);
+        let Memos = await GetAllMemo(User.ID, `${token}`);
+        console.log(Memos);
+
+        setUser({
+          ID: User.ID,
+          Email: User.Email,
+          Image: User.Image,
+          Username: User.Username,
+        });
+        setMemo(Memos);
+      }
     };
 
-    const GetAllMemo = async (id: number): Promise<any> => {
-      axios
-        .get(`${BaseUrl.baseurl}/memo/get/all/${id}`)
-        .then(res => {})
-        .catch(err => console.log(err));
-    };
     GetCurrentWeather();
   }, []);
 
@@ -80,6 +101,21 @@ const GetWeatherData = (latitude: number, longitude: number) => {
   return nowWeather;
 };
 
+const GetAllMemo = (id: number | undefined, token: string) => {
+  let All_memo = axios
+    .get(`${BaseUrl.baseurl}/memo/get/all/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then(res => {
+      return res.data.data;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+  return All_memo;
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -100,4 +136,24 @@ const styles = StyleSheet.create({
 interface weatherType {
   data: any;
   status: any;
+}
+
+interface userType {
+  ID?: number;
+  Email: string;
+  Image: string;
+  Username: string;
+}
+
+interface MemoType extends Array<Memo> {}
+interface Memo {
+  ID: number;
+  AuthorID: number;
+  CreatedAt: Date;
+  Title: string;
+  Weather: string;
+  Description: string;
+  IsPublic: boolean;
+  MusicUrl: string;
+  SharedToken: string;
 }

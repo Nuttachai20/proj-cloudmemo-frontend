@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen({
   navigation,
-}: RootTabScreenProps<'Home'>) {
+}: RootTabScreenProps<'User'>) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -27,9 +27,9 @@ export default function LoginScreen({
         Password: password,
       })
       .then(async (res: any) => {
-        const { access, refresh, user } = res.data.tokens;
+        const { access, refresh } = res.data.tokens;
 
-        await AsyncStorage.setItem('user', user);
+        await AsyncStorage.setItem('user', JSON.stringify(res.data.user));
         await AsyncStorage.setItem('access', access);
         await AsyncStorage.setItem('refresh', refresh);
 

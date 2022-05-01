@@ -26,6 +26,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           Memo: {
             screens: {
               MemoScreen: 'two',
+              AddMemo : 'add'
             },
           },
           User: {

@@ -52,7 +52,6 @@ LocaleConfig.locales['en'] = {
 LocaleConfig.defaultLocale = 'en';
 
 export default function CalendarComp() {
-  const [date, setDate] = useState([]);
   return (
     <View style={[styles.container, styles.shadowProp]}>
       <Calendar
