@@ -6,6 +6,7 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { useEffect, useState } from 'react';
 import WeatherWidget from '../components/Weather';
+import moment from 'moment';
 
 import {
   Calendar,
@@ -100,9 +101,21 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 
       if (user_info !== null) {
         let User = JSON.parse(user_info);
-        // console.log('User', User.ID);
         let Memos = await GetAllMemo(User.ID, `${token}`);
-        console.log(Memos);
+        // console.log(Memos);
+
+        let memo_array = [];
+        let map_memo: any;
+
+        for (let item of Memos) {
+          map_memo = {
+            [`${moment(item.CreatedAt).format('YYYY-MM-DD')}`]: {
+              marked: true,
+            },
+          };
+          memo_array.push(map_memo);
+        }
+        // console.log(memo_array);
 
         setUser({
           ID: User.ID,
@@ -117,15 +130,6 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     GetCurrentWeather();
   }, []);
 
-  // '2022-04-15': {
-  //   selected: true,
-  //   marked: true,
-  //   selectedColor: 'blue',
-  // },
-  // '2022-04-14': { marked: true },
-  // '2022-04-13': { marked: true, dotColor: 'red', activeOpacity: 0 },
-  // '2022-04-12': { disabled: true, disableTouchEvent: true },
-
   return (
     <View style={{ height: '100%' }} themeColor={weatherColor}>
       <WeatherWidget weather={weather.data} name={''} />
@@ -136,9 +140,17 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       >
         <Calendar
           style={{ backgroundColor: '#fff' }}
-          // markedDates={Memos}
+          markedDates={{
+            '2022-04-15': {
+              selected: true,
+              marked: true,
+              selectedColor: 'blue',
+            },
+            '2022-04-14': { marked: true },
+            '2022-04-13': { marked: true, dotColor: 'red', activeOpacity: 0 },
+            '2022-04-12': { disabled: true, disableTouchEvent: true },
+          }}
           hideArrows={false}
-          // renderArrow={left}
           theme={{
             backgroundColor: '#ffffff',
             calendarBackground: '#ffffff',
@@ -177,6 +189,7 @@ const GetWeatherData = (latitude: number, longitude: number) => {
     .then(res => {
       // console.log('send api');
       console.log(res.data.weather[0].main);
+      // AsyncStorage.setItem('weather', 'Cloud');
       AsyncStorage.setItem('weather', res.data.weather[0].main);
       return res;
     })
@@ -196,6 +209,7 @@ const GetAllMemo = (id: number | undefined, token: string) => {
     .then(res => {
       return res.data.data;
     })
+
     .catch(err => {
       console.log(err);
     });
@@ -260,3 +274,5 @@ interface Memo {
   MusicUrl: string;
   SharedToken: string;
 }
+
+interface MemoDate {}

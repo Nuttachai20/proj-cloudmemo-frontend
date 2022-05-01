@@ -19,17 +19,7 @@ export function useThemeColor(
     keyof typeof Colors.light &
     keyof typeof Colors.dark,
 ) {
-  // const theme = useColorScheme();
-  // console.log(Colors[theme][colorName]);
-
   return Colors[theme][colorName];
-  // const colorFromProps = theme;
-
-  // if (colorFromProps) {
-  //   return colorFromProps;
-  // } else {
-  //   return Colors[theme][colorName];
-  // }
 }
 
 type ThemeProps = {
@@ -49,8 +39,8 @@ export function Text(props: TextProps) {
     themeColor === 'Clouds'
       ? 'cloud'
       : themeColor === 'Rain'
-      ? 'light'
-      : 'dark',
+      ? 'dark'
+      : 'light',
     'text',
   );
 
@@ -65,8 +55,8 @@ export function View(props: ViewProps) {
     themeColor === 'Clouds'
       ? 'cloud'
       : themeColor === 'Rain'
-      ? 'light'
-      : 'dark',
+      ? 'dark'
+      : 'light',
     'background',
   );
 
