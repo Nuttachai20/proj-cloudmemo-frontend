@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "proj-cloudmemo-frontend",
-    "slug": "proj-cloudmemo-frontend",
+    "name": "cloudmemo",
+    "slug": "cloudmemo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -17,7 +17,9 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "buildNumber": "1.0.0",
+      "bundleIdentifier": "com.agapob20.proj-cloudmemo-frontend"
     },
     "android": {
       "adaptiveIcon": {

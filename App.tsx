@@ -20,22 +20,18 @@ import * as Location from 'expo-location';
 
 console.log('proj-cloudmemo-frontend');
 
-AppRegistry.registerComponent('proj-cloudmemo-frontend', () => App);
-AppRegistry.registerComponent(
-  'proj-cloudmemo-frontend'.toLowerCase(),
-  () => App,
-);
+AppRegistry.registerComponent('cloudmemo', () => App);
+AppRegistry.registerComponent('cloudmemo'.toLowerCase(), () => App);
 
 if (Platform.OS === 'web') {
   const rootTag =
-    document.getElementById('root') ||
-    document.getElementById('proj-cloudmemo-frontend');
-  AppRegistry.runApplication('proj-cloudmemo-frontend', { rootTag });
+    document.getElementById('root') || document.getElementById('cloudmemo');
+  AppRegistry.runApplication('cloudmemo', { rootTag });
 }
 
 if (Platform.OS === 'ios') {
   console.log('ios platform');
-  AppRegistry.registerComponent('proj-cloudmemo-frontend', () => App);
+  AppRegistry.registerComponent('cloudmemo', () => App);
   // Geolocation.requestAuthorization('whenInUse');
 }
 
