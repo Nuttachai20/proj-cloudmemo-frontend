@@ -89,13 +89,13 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-  console.log("Colors['cloud'].tint", Colors['cloud'].tint);
+  // console.log("Colors['cloud'].tint", Colors['cloud'].tint);
 
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: Colors['cloud'].tint,
+        tabBarActiveTintColor: Colors['cloud'].text,
         headerShown: false,
       }}
     >

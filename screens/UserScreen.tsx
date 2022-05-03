@@ -25,9 +25,9 @@ export default function UserScreen({ navigation }: RootTabScreenProps<'User'>) {
   }, []);
   return (
     <View themeColor={weatherColor} style={styles.container}>
-      <Text themeColor={weatherColor} style={styles.title}>
+      {/* <Text themeColor={weatherColor} style={styles.title}>
         User
-      </Text>
+      </Text> */}
 
       <Button
         onPress={() => {

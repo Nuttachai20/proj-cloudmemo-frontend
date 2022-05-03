@@ -63,8 +63,9 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Memo'>) {
         })
         .catch(err => {
           console.log(err);
+          if (err.message === 'Request failed with status code 401')
+            navigation.navigate('Login');
         });
-      console.log('token', token);
     };
 
     const CreateMemo = async (
@@ -91,21 +92,29 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Memo'>) {
         })
         .catch(err => {
           console.log(err);
+          if (err.message === 'Request failed with status code 401')
+            navigation.navigate('Login');
         });
     };
 
     return (
       <View themeColor={weatherColor} style={styles.container}>
-        <Text themeColor={weatherColor} style={styles.title}>
-          Memo
-        </Text>
-        <Pressable
-          onPress={() => {
-            navigation.navigate('Memo');
-          }}
-        >
-          <TabBarIcon name="arrow-left" color="#fff" />
-        </Pressable>
+        <View themeColor={weatherColor} style={styles.inline}>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('Memo');
+            }}
+          >
+            <TabBarIcon name="arrow-left" color="#A07A70" />
+          </Pressable>
+          <Text themeColor={weatherColor} style={styles.title}>
+            Memo
+          </Text>
+          <Text themeColor={weatherColor} style={styles.title}>
+            {}
+          </Text>
+        </View>
+
         <Input
           label="Title"
           style={{ width: '80%', marginBottom: 10 }}
@@ -124,14 +133,21 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Memo'>) {
         />
 
         {url.Title ? (
-          <View>
+          <View
+            themeColor={weatherColor}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
             <Text themeColor={weatherColor}>{url.Title}</Text>
             <Pressable
               onPress={() => {
                 setUrl({ Title: '', YoutubeId: '' });
               }}
             >
-              <TabBarIcon name="eject" color="#fff" />
+              <TabBarIcon name="eject" color="#A07A70" />
             </Pressable>
           </View>
         ) : (
@@ -141,6 +157,7 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Memo'>) {
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
+              width: '80%',
             }}
           >
             <Input
@@ -153,11 +170,12 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Memo'>) {
               }}
             />
             <Pressable
+              style={{ width: '25%' }}
               onPress={() => {
                 searchMusic(searchInput);
               }}
             >
-              <TabBarIcon name="search" color="#fff" />
+              <TabBarIcon name="search" color="#A07A70" />
             </Pressable>
           </View>
         )}
@@ -221,6 +239,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  inline: {
+    width: '100%',
+    paddingVertical: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
   separator: {
     marginVertical: 30,

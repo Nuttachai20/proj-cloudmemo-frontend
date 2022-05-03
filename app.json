@@ -9,7 +9,7 @@
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "center",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": false,
       "buildNumber": "1.0.0",
-      "bundleIdentifier": "com.agapob20.proj-cloudmemo-frontend"
+      "bundleIdentifier": "cloudmemo"
     },
     "android": {
       "adaptiveIcon": {

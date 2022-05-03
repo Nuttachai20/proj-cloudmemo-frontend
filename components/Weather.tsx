@@ -9,15 +9,17 @@ import { useEffect, useState } from 'react';
 
 export default function weatherWidget(prop: weatherType) {
   const { weather, main, name } = prop.weather;
-  const [weatherColor, setWeatherColor] = useState('');
+  const { weatherColor } = prop;
+  // const [weatherColor, setWeatherColor] = useState('');
 
-  useEffect(() => {
-    const SetWeather = async (): Promise<any> => {
-      let weather = await AsyncStorage.getItem('weather');
-      setWeatherColor(`${weather}`);
-    };
-    SetWeather();
-  }, []);
+  // useEffect(() => {
+  //   const SetWeather = async (): Promise<any> => {
+  //     let weather = await AsyncStorage.getItem('weather');
+  //     setWeatherColor(`${weather}`);
+  //   };
+  //   SetWeather();
+  //   setWeatherColor(`${weather}`);
+  // }, []);
 
   const listWeather = () => {
     let text: string;
@@ -62,12 +64,21 @@ export default function weatherWidget(prop: weatherType) {
 
   return (
     <View themeColor={weatherColor} style={styles.container}>
-      <Text themeColor={weatherColor} style={styles.header}>
-        Today, {moment(dt).format('dddd DD  MMMM')}
-      </Text>
-      <Text themeColor={weatherColor} style={styles.header}>
-        {name}
-      </Text>
+      <View
+        themeColor={weatherColor}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <Text themeColor={weatherColor} style={{ fontWeight: 'bold' }}>
+          Today, {moment(dt).format('dddd DD  MMMM')}
+        </Text>
+        <Text themeColor={weatherColor} style={{ fontWeight: 'bold' }}>
+          {name}
+        </Text>
+      </View>
+
       <View themeColor={weatherColor} style={styles.weatherDisplay}>
         <View themeColor={weatherColor} style={{ width: '40%' }}>
           <WeatherIcon />
@@ -114,7 +125,6 @@ const styles = StyleSheet.create({
     display: 'flex',
   },
   header: {
-    flex: 1,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -124,7 +134,7 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    flex: 1,
+    flex: 2,
     justifyContent: 'space-around',
   },
   stretch: {
@@ -140,7 +150,7 @@ const styles = StyleSheet.create({
 });
 
 interface weatherType {
-  name: string;
+  weatherColor: string;
   weather: {
     base: string;
     weather: Array<{

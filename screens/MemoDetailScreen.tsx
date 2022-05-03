@@ -64,7 +64,7 @@ export default function MemoDetailScreen({
               navigation.navigate('Root');
             }}
           >
-            <TabBarIcon name="arrow-left" color="#fff" />
+            <TabBarIcon name="arrow-left" color="#A07A70" />
           </Pressable>
           <Text themeColor={weatherColor} style={styles.title}>
             Memo

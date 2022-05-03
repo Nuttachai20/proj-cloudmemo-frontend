@@ -38,7 +38,7 @@ export default function MemoScreen({ navigation }: RootTabScreenProps<'Memo'>) {
           opacity: pressed ? 0.5 : 1,
         })}
       >
-        <TabBarIcon name="plus-circle" color="#000" />
+        <TabBarIcon name="plus-circle" color="#A07A70" />
       </Pressable>
     </View>
   );
@@ -48,7 +48,7 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={100} style={{ marginBottom: -3 }} {...props} />;
 }
 
 const styles = StyleSheet.create({

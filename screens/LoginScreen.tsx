@@ -36,7 +36,9 @@ export default function LoginScreen({
         navigation.navigate('Root');
       })
       .catch(err => {
-        alert(err);
+        alert(err.message);
+        if (err.message === 'Request failed with status code 401')
+          navigation.navigate('Login');
       });
   };
 
@@ -45,6 +47,7 @@ export default function LoginScreen({
       <Layout style={styles.separator} />
       <Text style={styles.title}>Login</Text>
       <Input
+        style={{ marginVertical: 10 }}
         label="Email Address"
         placeholder="Email"
         value={username}
@@ -52,6 +55,7 @@ export default function LoginScreen({
       />
 
       <Input
+        style={{ marginBottom: 10 }}
         value={password}
         label="Password"
         placeholder="Password"
@@ -83,6 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#fff',
   },
   title: {
     fontSize: 20,
@@ -109,6 +114,7 @@ const styles = StyleSheet.create({
     color: '#8F9BB3',
   },
   button: {
+    marginVertical: 10,
     margin: 2,
   },
 });

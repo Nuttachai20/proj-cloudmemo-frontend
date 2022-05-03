@@ -146,10 +146,30 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     }
   };
 
-  return (
-    <View style={{ height: '100%' }} themeColor={weatherColor}>
-      <WeatherWidget weather={weather.data} name={''} />
+  const GetAllMemo = (id: number | undefined, token: string) => {
+    let All_memo = axios
+      .get(`${BaseUrl.baseurl}/memo/get/all/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(res => {
+        return res.data.data;
+      })
 
+      .catch(err => {
+        console.log(err);
+        if (err.message === 'Request failed with status code 401')
+          navigation.navigate('Login');
+      });
+
+    return All_memo;
+  };
+
+  return (
+    <View
+      themeColor={weatherColor}
+      style={{ height: '100%', justifyContent: 'flex-start' }}
+    >
+      <WeatherWidget weather={weather.data} weatherColor={weatherColor} />
       <View
         themeColor={weatherColor}
         style={[styles.Container, styles.shadowProp]}
@@ -200,45 +220,14 @@ const GetWeatherData = (latitude: number, longitude: number) => {
     .then(res => {
       // console.log('send api');
       console.log(res.data.weather[0].main);
-      // AsyncStorage.setItem('weather', 'Cloud');
-      AsyncStorage.setItem('weather', res.data.weather[0].main);
+      AsyncStorage.setItem('weather', 'Clouds');
+      // AsyncStorage.setItem('weather', res.data.weather[0].main);
       return res;
     })
     .catch(error => {
       console.log(error);
     });
   return nowWeather;
-};
-
-const GetAllMemo = (id: number | undefined, token: string) => {
-  console.log(token);
-
-  let All_memo = axios
-    .get(`${BaseUrl.baseurl}/memo/get/all/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then(res => {
-      // let memo_array = [];
-      // let map_memo: any;
-
-      // for (let item of Memos) {
-      //   map_memo = {
-      //     [`${moment(item.CreatedAt).format('YYYY-MM-DD')}`]: {
-      //       marked: true,
-      //     },
-      //   };
-      //   console.log('map_memo:', map_memo);
-      //   // console.log('...map_memo:', ...map_memo);
-      //   memo_array.push(map_memo);
-      // }
-      return res.data.data;
-    })
-
-    .catch(err => {
-      console.log(err);
-    });
-
-  return All_memo;
 };
 
 const styles = StyleSheet.create({
@@ -267,9 +256,11 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
   Container: {
-    paddingTop: 20,
+    paddingVertical: 20,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
     backgroundColor: '#ffffff',
   },
 });
